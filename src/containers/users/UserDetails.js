@@ -14,15 +14,17 @@ import { ToastContainer } from 'react-toastify';
 
 
     const [formData,setFormData] = useState({
-      
+      _id:'',
         firstname:'',
         lastname:'',
         email:'',
         phone_no:'',
-        createdAt:''
+        createdAt:'',
+        status:'',
+        image:''
  
     });
-    const {firstname,lastname,email,phone_no,createdAt} = formData
+    const {firstname,lastname,email,phone_no,createdAt,_id,status,image} = formData
 
 
 
@@ -43,7 +45,11 @@ import { ToastContainer } from 'react-toastify';
             lastname: loading || !profile.lastname ? '' : profile.lastname,
             email:loading || !profile.email ? '' : profile.email,
             phone_no:loading || !profile.phone_no ? '' : profile.phone_no,
-            createdAt:loading || !profile.createdAt ? '' : profile.createdAt
+            createdAt:loading || !profile.createdAt ? '' : profile.createdAt,
+            _id:loading || !profile._id ? '' : profile._id,
+            status:loading || !profile.status ? '' : profile.status,
+            image:loading || !profile.image ? '' : profile.image,
+            
 
   
           });
@@ -82,77 +88,70 @@ import { ToastContainer } from 'react-toastify';
             {profile !== null||profile!=undefined ? (
               <Fragment>
             
-            <section className="admin-profile">
-        <div className="app-content content">
-          <div className="content-wrapper">
-            <div className="content-body">
-              {/* Basic form layout section start */}
-              <section id="configuration user-management">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="card jost pad-20 pb-5 px-lg-4 px-2">
-                      <div className="card-content collapse show">
-                        <div className="card-body table-responsive card-dashboard">
-                          <a onClick={()=>history.goBack()}><h1 className="pull-left source d-pur f-32 s-bold mt-2"><i className="fas fa-angle-left" /> {update?"Edit User Profile": "User Profile"}</h1></a>
-                          <div className="clearfix" />
-                          <div className="dash-card-inner mt-2">
-                            <div className="d-flex align-items-center justify-content-center mt-lg-3 mt-0">
-                              <img src="images/user-icon.png" alt="" className="img-fluid" />
-                              <label htmlFor="picture">
-                                <i className="fas fa-camera profile-pic-icon" />
-                              </label>
-                              <form style={{display: 'none'}}>
-                                <input type="file" name="pic" accept=".gif,.jpg,.png,.tif|image/*" id="picture" />
-                                <input type="submit" />
-                              </form>
+            <div className="app-content dashboard content">
+        <div className="content-wrapper">
+          <div className="content-body">
+            <section id="configuration">
+              <div className="row">
+                <div className="col-12">                      	    
+                  <div className="card rounded pad-20">
+                    <div className="card-content collapse show">
+                      <div className="card-body">
+                        <div className="page-title">
+                          <div className="row">
+                            <div className="col-12 col-sm-9">
+                              <h1><a onClick={()=>history.goBack()}><i className="fa fa-angle-left" /></a>User Details</h1>
                             </div>
-                            <form onSubmit={(e)=>onSubmit(e)}>
-                            <div className="row mt-2">
-                                              <div className="col-lg-4 col-12 offset-lg-2 mt-0">
-                                <p className="jost medium black p_lg mb-1">First Name</p>
-                                <input type="text" className="form-control" value={firstname}  name="firstname"  value={firstname} onChange={(e)=>{onchange(e)}} defaultValue="Mark" disabled={!update?"true":""} required />                          
+                            <div className="col-12 col-sm-3 d-flex justify-content-sm-end">
+                              <div className="paid-status">
+                                <h6>Status:</h6>
+                                <span className={`status ${status==1?"active":"inactive"}`}><i className="fa fa-check-circle" />{status==1?"Active":"Inactive"}</span>
                               </div>
-                              <div className="col-lg-4 col-12 mt-lg-0 mt-1">
-                                <p className="jost medium black p_lg mb-1">Last Name</p>
-                                <input type="text" className="form-control"  name="lastname"  value={lastname} onChange={(e)=>{onchange(e)}}  defaultValue="Carson" disabled={!update?"true":""} required />  
-                              </div>
-                            </div>
-                            <div className="row mt-lg-2 mt-1">
-                              <div className="col-lg-4 col-12 offset-lg-2 mt-lg-0 mt-1">
-                                <p className="jost medium black p_lg mb-1">Phone Number</p>
-                                <input type="text" className="form-control"  name="phone_no"  value={phone_no} onChange={(e)=>{onchange(e)}} disabled={!update?"true":""} defaultValue="+012 3456 789" />                          
-                              </div>
-                              <div className="col-lg-4 col-12 mt-lg-0 mt-1">
-                                <p className="grey source s-bold p_lg">Email Address</p>
-                                <p className="jost medium black p_lg">{profile.email}</p>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-12 text-center">
-                      {
-                        !update?
-                        <a onClick={()=>setUpdate(true)} ><button className="mt-46">Update</button></a>:
-                        <a ><button type="submit" className="mt-46">save</button></a>
-
-                      }
-
-                              </div>
-                            </div>
-                            </form>
+                            </div>    
                           </div>
                         </div>
+                        <div className="user-detail-block">
+                          <div className="user-name">
+                            <div className="row">
+                              <div className="col-xl-11 col-12">
+                                <div className="media d-sm-flex d-block">
+                                  <div className="media-left">
+                                    <img src={image?image:"images/avatar.jpg"} className="img-fluid ml-0" alt="" />
+                                  </div>
+                                  <div className="media-body">
+                                    <h3>Mark Carson</h3>
+                                    <div className="user-info">
+                                      <div className="row detail-row d-flex align-items-center">
+                                        <div className="col-12 col-md-6 col-lg-4 lablename">User Name:</div>
+                                        <div className="col-12 col-md-6 col-lg-4">{firstname}</div>
+                                      </div>
+                                      <div className="row detail-row d-flex align-items-center">
+                                        <div className="col-12 col-md-6 col-lg-4 lablename">User ID:</div>
+                                        <div className="col-12 col-md-6 col-lg-4">{_id}</div>
+                                      </div>
+                                      <div className="row detail-row d-flex align-items-center">
+                                        <div className="col-12 col-md-6 col-lg-4 lablename">Email:</div>
+                                        <div className="col-12 col-md-6 col-lg-4">{email}</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>	
                       </div>
+                      <div className="clearfix" />
                     </div>
                   </div>
                 </div>
-              </section>
-              {/* // Basic form layout section end */}
-            </div>
+              </div>
+            </section>
           </div>
         </div>
-
-        <ToastContainer autoClose={3000}/>
-      </section>
+      </div>
+ 
+     
 
               
               

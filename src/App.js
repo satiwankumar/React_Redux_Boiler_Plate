@@ -40,6 +40,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
+       <ToastContainer autoClose={3000}/>
       {/* <BrowserRouter basename="/lug_react"> */}
       <HashRouter >
       <Suspense fallback={<><Spinner/></>}>
@@ -54,7 +55,7 @@ const App = () => {
             
             
             <Route component={Routes} />
-            <ToastContainer autoClose={3000}/>
+           
           </Switch>
         </Fragment>
         </Suspense>

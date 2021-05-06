@@ -18,9 +18,10 @@ import moment from 'moment'
         <tbody>
         <tr role="row" className="odd">
                                         <td className="sorting_1">{getSerial(perPage,currentPage,index)}</td>
-                                      <td>{data.user &&data.user._id}</td>
                                       <td>{data.user &&data.user.firstname+ " "+data.user.lastname}</td> 
-                                      <td>{moment(data && data.createdAt).format('Do MMMM YYYY')}</td>
+                                      <td>{moment(data.user && data.user.createdAt).format("Do MMMM YYYY")}</td>
+
+                                      <td>{data.user &&data.user.status==1?"active":"inactive"}</td> 
                                       <td>
                                         <div className="btn-group mr-1 mb-1">
                                           <button type="button" className="btn dropdown-toggle btn-drop-table btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-ellipsis-v" /></button>

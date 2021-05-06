@@ -1,254 +1,388 @@
-import React,{ useState} from 'react'
-import {Link, Redirect} from 'react-router-dom'
-import {connect} from 'react-redux'
-import PropTypes from'prop-types'
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
-import {login,forgotPassword,resetPassword,verifyCode} from '../../actions/authAction'
+import {
+  login,
+  forgotPassword,
+  resetPassword,
+  verifyCode,
+} from "../../actions/authAction";
 
+const Login = ({
+  isAuthenticated,
+  isAdmin,
+  login,
+  forgotPassword,
+  resetPassword,
+  code,
+  verifyCode,
+  history,
+}) => {
+  // const [refresh, setstate] = useState(false)
+  const [passtype, Setpasstype] = useState(false);
 
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    forgotemail: "",
+    resetCode: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
-
-const Login = ({isAuthenticated,isAdmin,login,forgotPassword,resetPassword,code,verifyCode,history}) => {
-// const [refresh, setstate] = useState(false)
-const [passtype,Setpasstype] = useState(false)
-
-    const [formData,setFormData] = useState({
-      
-        email:'',
-        password:'',
-        forgotemail:'',
-        resetCode:'',
-        newPassword:'',
-        confirmPassword:'',
-    
- 
-    });
-
-    const {email,password,forgotemail,resetCode,newPassword,confirmPassword} = formData
-    const onchange=(e)=>{
-        console.log(e.target.name)
-        console.log(e.target.value)
-        setFormData({...formData,[e.target.name]:e.target.value})
-
-    }
-
-  
-    const onSubmit= async(e)=>{
-        e.preventDefault()
-        console.log("email,password")
-        // console.log(email,password)
-        login(email,password,true)
-     
-
-    }
-
-  
-  const handleForgot = async (e) => {
-    e.preventDefault();
-    console.log(forgotemail)
-    // alert("called")
-    forgotPassword(forgotemail,history);
+  const {
+    email,
+    password,
+    forgotemail,
+    resetCode,
+    newPassword,
+    confirmPassword,
+  } = formData;
+  const onchange = (e) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleVerfyCode= async(e)=>{
-    e.preventDefault()
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log("email,password");
+    // console.log(email,password)
+    login(email, password, "ADMIN");
+  };
+
+  const handleForgot = async (e) => {
+    e.preventDefault();
+    console.log(forgotemail);
+    // alert("called")
+    forgotPassword(forgotemail, history);
+  };
+
+  const handleVerfyCode = async (e) => {
+    e.preventDefault();
     // console.log(resetCode)
-    verifyCode(resetCode,history)
- 
+    verifyCode(resetCode, history);
+  };
+
+  const handleReset = async (e) => {
+    e.preventDefault();
+    console.log(newPassword, confirmPassword, code);
+    resetPassword(newPassword, confirmPassword, code, "admin", history);
+  };
+
+  //Redirect if logged int
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
   }
-  
-const handleReset= async(e)=>{
-  e.preventDefault()
-console.log(newPassword,confirmPassword,code)
-  resetPassword(newPassword,confirmPassword,code,"admin",history)
-
-
-}
-
-    //Redirect if logged int
-    if(isAuthenticated){
-      return <Redirect to="/dashboard"/>
-
-    }
-    return (
-       <>
-       <section className="admin-login ad-log">
+  return (
+    <>
+      <section className="login-main">
         <div className="container">
-          <div className="admin-login-card">
+          <div className="login-inner">
             <div className="row">
-              <div className="col-6">
-                <div className="admin-inner">
-                  <img src="images/logo-bg.png" alt="" className="img-fluid h-100" />
+              <div className="col-lg-6 col-12 d-flex align-items-stretch">
+                <div className="left d-flex align-items-center justify-content-center">
+                  <img
+                    src="images/logo-login.png"
+                    className="img-fluid"
+                    alt=""
+                  />
                 </div>
               </div>
-              <div className="col-md-6 my-auto p-70">
-                <img src="images/logo.png" alt="" className="img-fluid mx-auto" />
-                <h2 className="s-bold d-pur source">Login</h2>
-              <form onSubmit={e=>onSubmit(e)}>
-
-                <div className="md-form md-outline input-with-pre-icon">
-                  <i className="far fa-envelope clr-orange input-prefix" />
-                  <input type="email" id="prefixInside2" className="form-control py-3" value={email} name="email"  placeholder="Enter Email Address" onChange={(e)=>onchange(e)} required   />
-                </div>
-                {/* <div className="form-field position-relative" >
-        <img src="images/lock.png" className="left-icon" aria-hidden="true" />
-        <input type="password" className="site-input login both-icon enter-input w-100" placeholder="Enter Password" name id />
-        <i className="fa enter-icon right-icon fa-eye-slash" aria-hidden="true" />
-      </div> */}
-                <div className="md-form md-outline input-with-pre-icon">
-                  <img src="images/lock.png" className="input-prefix" />
-                  
-                  <input type={passtype==false?"password":"text"} id="prefixInside2" className="form-control py-3" value={password} name="password" placeholder="Enter Password" onChange={(e)=>onchange(e)} required  />
-                  <i className={`fas fa-eye${passtype==false?"-slash":""} hide-pass`} onClick={()=>Setpasstype(!passtype)} />
-                </div>
-                <div className="d-flex justify-content-between">
-                  <div className="d-flex align-items-center">
-                    <input type="checkbox" id name className="custom-check" defaultValue="Remember me" />
-                    <label className="jost ml-2" htmlFor style={{color: '#5D5D5D', fontSize: '13px'}}>Remember me</label>
+              <div className="col-lg-6 col-12 ">
+                <div className="right">
+                  <h1 className>Login</h1>
+                  <h6>Login to Your Account</h6>
+                  <form onSubmit={(e) => onSubmit(e)}>
+                    <div className="row">
+                      <div className="col-12 form-group">
+                        <label htmlFor className="form-label">
+                          Email address
+                        </label>
+                        <input
+                          type="email"
+                          className="form-control"
+                          value={email}
+                          name="email"
+                          placeholder="Enter Email Address"
+                          onChange={(e) => onchange(e)}
+                          required
+                        />
+                      </div>
+                      <div className="col-12 form-group position-relative">
+                        <label htmlFor className="form-label">
+                          Password
+                        </label>
+                        <input
+                          type={passtype == false ? "password" : "text"}
+                          className="form-control enter-input"
+                          value={password}
+                          name="password"
+                          placeholder="Enter Password"
+                          onChange={(e) => onchange(e)}
+                          required
+                        />
+                        <button
+                          type="button"
+                          className="view-btn position-absolute"
+                        >
+                          {" "}
+                          <i
+                            className="fa fa-eye-slash enter-icon right-icon"
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      <div className>
+                        <label className="login-check">
+                          Remember Me
+                          <input type="checkbox" />
+                          <span className="checkmark" />
+                        </label>
+                      </div>
+                      <div className>
+                        {" "}
+                        <a
+                          href="#"
+                          className="forgot"
+                          data-toggle="modal"
+                          data-target="#exampleModalCenter"
+                        >
+                          {" "}
+                          Forgot Password?
+                        </a>{" "}
+                      </div>
+                    </div>
+                    <div className="d-block col-12 text-center">
+                      <button type="submit" className="btn-default login">
+                        login
+                      </button>
+                    </div>
+                    <div className="d-block col-12 text-center bck-text">
+                      <Link to="/">Back to Website</Link>
+                    </div>
+                  </form>
+                  {/*login modal start here*/}
+                  {/* Modal */}
+                  <div
+                    className="modal login-modal fade modal-1"
+                    id="exampleModalCenter"
+                    tabIndex={-1}
+                    role="dialog"
+                    aria-labelledby="exampleModalCenterTitle"
+                    aria-hidden="true"
+                  >
+                    <div
+                      className="modal-dialog modal-dialog-centered"
+                      role="document"
+                    >
+                      <div className="modal-content">
+                        <div className="forget-pass">
+                          <button
+                            type="button"
+                            className="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">×</span>
+                          </button>
+                          <div className="modal-body">
+                            <h1>Password Recovery</h1>
+                            <h4>
+                              Please Enter Your Email Address To Recover Your
+                              Password
+                            </h4>
+                            <form onSubmit={(e) => handleForgot(e)}>
+                              <div className="row">
+                                <div className="col-12 form-group">
+                                  <label htmlFor className="form-label">
+                                    Email address
+                                  </label>
+                                  <input
+                                    type="email"
+                                    placeholder="Enter Email Address"
+                                    className="form-control"
+                                    name="forgotemail"
+                                    onChange={(e) => onchange(e)}
+                                    placeholder="Enter Email Address"
+                                    required
+                                  />
+                                  <button type="submit" className="btn-default">
+                                    {" "}
+                                    Continue{" "}
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <a href="#_" data-toggle="modal" data-target="#pwdrecovery1" style={{textDecoration: 'underline', fontSize: '13px'}} className="jost">Forgot Password?</a>
-                </div>
-                <a ><button type="submit" className="mt-xm-5 mt-3 source">Login</button></a>
-                <div className="mt-sm-5 mt-3">
-                  <a href="#_" className="s-bold f-16 l-black jost d-flex align-items-center justify-content-center"><img src="images/right-arrow.png" className="img-fluid mr-1" /> Back To Website</a>
-                </div>
-              </form>
 
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="modal fade" id="pwdrecovery1" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div className="modal-dialog modal-lg modal-dialog-centered " role="document">
-            <div className="modal-content">
-              <button type="button" className="close text-right mr-5 mt-4" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-              <div className="pt-1 pb-5 px-sm-5 px-1">
-                <h2 className="s-bold source d-pur">Password Recovery</h2>
-                <div className="md-form md-outline input-with-pre-icon">
-                  <i className="far fa-envelope clr-orange input-prefix" />
-                  <input type="text" id="prefixInside2" className="form-control py-3" placeholder="Enter Email Address" />
+                  <div
+                    className="modal login-modal fade modal-1"
+                    id="exampleModalCenter"
+                    tabIndex={-1}
+                    role="dialog"
+                    aria-labelledby="exampleModalCenterTitle"
+                    aria-hidden="true"
+                  >
+                    <div
+                      className="modal-dialog modal-dialog-centered"
+                      role="document"
+                    >
+                      <div className="modal-content">
+                        <div className="forget-pass">
+                          <button
+                            type="button"
+                            className="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">×</span>
+                          </button>
+                          <div className="modal-body">
+                            <h1>Password Recovery</h1>
+                            <h4>
+                              Please Enter Your Email Address To Recover Your
+                              Password
+                            </h4>
+                            <form
+                              onSubmit={(e) => {
+                                handleVerfyCode(e);
+                              }}
+                            >
+                              <div className="row">
+                                <div className="col-12 form-group">
+                                  <label htmlFor className="form-label">
+                                    verification code
+                                  </label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="Enter Verification Code"
+                                    value={resetCode}
+                                    name="resetCode"
+                                    onChange={(e) => onchange(e)}
+                                    required
+                                  />
+                                  <button type="submit" className="btn-default">
+                                    {" "}
+                                    Continue{" "}
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/*login modal end here*/}
+                  {/*forgot step 2 start here*/}
+                  {/* Button trigger modal */}
+                  <div
+                    className="modal fade login-modal modal-2"
+                    id="password-modal"
+                    tabIndex={-1}
+                    role="dialog"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div
+                      className="modal-dialog modal-dialog-centered"
+                      role="document"
+                    >
+                      <div className="modal-content">
+                        <div className="forget-pass">
+                          <button
+                            type="button"
+                            className="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">×</span>
+                          </button>
+                          <div className="modal-body">
+                            <h1>Password Recovery</h1>
+                            <form>
+                              <div className="row">
+                                <div className="col-12 form-group">
+                                  <label htmlFor className="form-label">
+                                    Password
+                                  </label>
+                                  <input
+                                    type="password"
+                                    className="form-control enter-input"
+                                    placeholder="Password"
+                                  />
+                                  <button className="view-btn position-absolute">
+                                    {" "}
+                                    <i
+                                      className="fa fa-eye-slash enter-icon right-icon"
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                </div>
+                                <div className="col-12 form-group confrm-pass">
+                                  <label htmlFor className="form-label">
+                                    Confirm Password
+                                  </label>
+                                  <input
+                                    type="password"
+                                    className="form-control enter-input"
+                                    placeholder="Confirm Password"
+                                  />
+                                  <button className="view-btn position-absolute">
+                                    {" "}
+                                    <i
+                                      className="fa fa-eye-slash enter-icon right-icon"
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                </div>
+                                <div className="col-12 text-center">
+                                  <button
+                                    type="button"
+                                    className="btn-default"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    Update
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/*forgot step 2 end here*/}
                 </div>
-                <a href="#_"><button className="source" data-toggle="modal" data-target="#pwdrecovery2" data-dismiss="modal" aria-label="Close">Continue</button></a>
-                <a href="admin-login.html" className="s-bold f-16 l-black jost d-flex align-items-center justify-content-center mt-sm-5 mt-3"><img src="images/right-arrow.png" className="img-fluid mr-1" /> Back To Login</a>                    
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="modal fade" id="pwdrecovery2" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div className="modal-dialog modal-lg modal-dialog-centered " role="document">
-            <div className="modal-content">
-              <button type="button" className="close text-right mr-5 mt-4" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-              <div className="pt-1 pb-5 px-sm-5 px-1">
-                <h2 className="s-bold source d-pur">Password Recovery</h2>
-                <div className="md-form md-outline mb-0 input-with-pre-icon">
-                  <i className="fas fa-pencil-alt clr-orange input-prefix" />
-                  <input type="text" id="prefixInside2" className="form-control py-3"  placeholder="Enter Verification Code" />
-                </div>
-                <div className="text-right">
-                  <a href="#_" style={{textDecoration: 'underline', fontSize: '13px'}} className="jost">Resend Code</a>
-                </div>
-                <a href="#_"><button className="source mt-4" data-toggle="modal" data-target="#pwdrecovery3" data-dismiss="modal" aria-label="Close">Continue</button></a>
-                <a href="admin-login.html" className="s-bold f-16 l-black jost d-flex align-items-center justify-content-center mt-sm-5 mt-3"><img src="images/right-arrow.png" className="img-fluid mr-1" /> Back To Login</a>                       
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="modal fade" id="pwdrecovery3" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div className="modal-dialog modal-lg modal-dialog-centered " role="document">
-            <div className="modal-content">
-              <button type="button" className="close text-right mr-5 mt-4" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-              <div className="pt-1 pb-5 px-sm-5 px-1">
-                <h2 className="s-bold source d-pur">Password Recovery</h2>
-                <div className="md-form md-outline input-with-pre-icon">
-                  <i className="fas fa-key clr-orange input-prefix" />
-                  <input type="text" id="prefixInside2" className="form-control py-3" placeholder="Enter Password" />
-                  <i className="fas fa-eye-slash l-grey hide-pass" />
-                </div>
-                <div className="md-form md-outline input-with-pre-icon">
-                  <i className="fas fa-key clr-orange input-prefix" />
-                  <input type="text" id="prefixInside2" className="form-control py-3" placeholder="Retype Password" />
-                  <i className="fas fa-eye-slash l-grey hide-pass" />
-                </div>
-                <a href="admin-login.html"><button className="source">Update</button></a>
-                <a href="admin-login.html" className="s-bold f-16 l-black jost d-flex align-items-center justify-content-center mt-sm-5 mt-3"><img src="images/right-arrow.png" className="img-fluid mr-1" /> Back To Login</a>                     
               </div>
             </div>
           </div>
         </div>
       </section>
+    </>
+  );
+};
 
-      {/* <div class="pr-0">              
-            <div className="container-fluid admin-login pl-0">
-        <div className="row">
-          <div className="col-5 pr-0">
-            <div className="admin-login-inner d-flex align-items-center justify-content-center">
-              <img src={process.env.PUBLIC_URL+"/images/logo-bg.png"} alt="" className="img-fluid" />
-            </div>
-          </div>
-          <div className="col-xl-4 col-lg-5 py-3 py-lg-0 col-md-6 my-auto ml-3">
-          <form onSubmit={e=>onSubmit(e)}>
-            <div className>
-              <div className="admin-login-card w-100 p-5">
-                <div className="text-left">
-                  <h4 className="medium clr-orange">Login To Your Account</h4>
-                  <hr className="blue_line bck-orange" />
-                  <div className="md-form md-outline input-with-pre-icon">
-                    <i className="fas fa-envelope  input-prefix" />
-                    <input type="text" id="prefixInside2" className="form-control py-2" value={email} name="email"  placeholder="Enter Email Address" onChange={(e)=>onchange(e)} required />
-                  </div>
-                  <div className="md-form md-outline input-with-pre-icon">
-                    <i className="fas fa-lock  input-prefix" />
-                    <input type="text" id="prefixInside2" className="form-control py-2"value={password} name="password" placeholder="Enter Password" onChange={(e)=>onchange(e)} required />
-                    <i className="fas fa-eye-slash hide-pass" />
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <div className="d-flex align-items-center">
-                      <input type="checkbox" id name className="custom-check" defaultValue="Remember me" />
-                      <label className=" p_md l-grey ml-2" htmlFor>Remember me</label>
-                    </div>
-                    <Link to="/forgotpassword" className="clr-orange">Forgot Password?</Link>
-                  </div>
-                <a> <button type="submit" className="w-100 mt-4">Login</button></a>
-                  <div className="mt-5 text-center">
-                    <Link to="/" className="medium clr_grey"><i className="fa fa-arrow-circle-left mr-2" /> Back
-                      To Website</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </form>
-          </div>
-        
-        </div>
-      </div>
-            <ToastContainer autoClose={2000} />
-</div> */}
-<ToastContainer autoClose={2000} />
-            </>
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
 
-
-   
-
-
-    )
-}
-
-
-Login.propTypes={
- login:PropTypes.func.isRequired,
- isAuthenticated:PropTypes.bool 
-}
-const mapStateToProps = state =>({
-isAuthenticated : state.auth.isAuthenticated
-})
-
-
-export default connect(mapStateToProps,{login})(Login)
+export default connect(mapStateToProps, { login })(Login);

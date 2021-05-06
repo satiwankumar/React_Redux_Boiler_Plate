@@ -23,64 +23,59 @@ import { getFeedbackById } from '../../actions/feedbackAction';
               <Spinner />
             ) : (
               <Fragment>
-                
-      <section className="admin-profile">
-        <div className="app-content content">
-          <div className="content-wrapper">
-            <div className="content-body">
-              {/* Basic form layout section start */}
-              <section id="configuration user-management">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="card jost pad-20 pb-5 px-lg-4 px-2">
-                      <div className="card-content collapse show">
-                        <div className="card-body table-responsive card-dashboard">
-                          <a onClick={()=>history.goBack()} ><h1 className="pull-left source d-pur f-32 s-bold mt-2"><i className="fas fa-arrow-left" /> Feedback</h1></a>
-                          <div className="clearfix" />
+               <div className="app-content dashboard content">
+        <div className="content-wrapper">
+          <div className="content-body">
+            <section id="configuration" className="feedback-detail">
+              <div className="row">
+                <div className="col-12">                      	    
+                  <div className="card rounded pad-20">
+                    <div className="card-content collapse show">
+                      <div className="card-body">
+                        <div className="page-title">
                           <div className="row">
                             <div className="col-12">
-                              <h4 className="refundedheading source s-bold">Feedback Details</h4>
-                            </div>
-                          </div>
-                          <div className="dash-card-inner mt-2 ml-lg-5 ml-1">
-                            <div className="row mt-46">
-                              <div className="col-lg-3 col-12 mt-lg-0 mt-1">
-                                <p className="grey source s-bold p_lg">User ID</p>
-                                <p className="jost medium black p_lg">{Feedback._id}</p>
-                              </div>
-                              <div className="col-lg-4 col-12 mt-lg-0 mt-1">
-                                <p className="grey source s-bold p_lg">Username</p>
-                                <p className="jost medium black p_lg">{Feedback.user.firstname + " "+Feedback.user.firstname}</p>
-                              </div>
-                            </div>
-                            <div className="row mt-46">
-                              <div className="col-lg-3 col-12 mt-lg-0 mt-1">
-                                <p className="grey source s-bold p_lg">User Email Address</p>
-                                <p className="jost medium black p_lg">{Feedback.user.email}</p>
-                              </div>
-                              <div className="col-lg-4 col-12 mt-lg-0 mt-1">
-                                <p className="grey source s-bold p_lg">Subject</p>
-                                <p className="jost medium black p_lg">{Feedback.subject}</p>
-                              </div>
-                            </div>
-                            <div className="row mt-46">
-                              <div className="col-lg-9 col-12 mt-lg-0 mt-1">
-                                <p className="grey source s-bold p_lg">Message</p>
-                                <p className="jost medium black p_lg" style={{lineHeight: '23px'}}>{Feedback.message}</p>
-                              </div>
-                            </div>
+                              <h1><a onClick={()=>history.goBack()}><i className="fa fa-angle-left" /></a>Feedback Details</h1>
+                            </div>   
                           </div>
                         </div>
+                        <div className="user-detail-block">
+                          <div className="user-info">
+                            <div className="row detail-row">
+                              <div className="col-12 col-md-3 lablename">User Name:</div>
+                              <div className="col-12 col-sm-8">{Feedback&&Feedback.user?.name}</div>
+                            </div>
+                            <div className="row detail-row">
+                              <div className="col-12 col-md-3 lablename">Email:</div>
+                              <div className="col-12 col-sm-8">{Feedback&&Feedback.email?.email}</div>
+                            </div>
+                            <div className="row detail-row">
+                              <div className="col-12 col-md-3 lablename">User Type: </div>
+                              <div className="col-12 col-sm-8">{Feedback&&Feedback.user?.role}</div>
+                            </div>
+                            <div className="row detail-row">
+                              <div className="col-12 col-md-3 lablename">Subject:</div>
+                              <div className="col-12 col-sm-8">
+                                {Feedback&&Feedback.subject} </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-12 col-md-11 discription">
+                                <h6>Message:</h6>
+                                <p>{Feedback&&Feedback.message} </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>	
                       </div>
+                      <div className="clearfix" />
                     </div>
                   </div>
                 </div>
-              </section>
-              {/* // Basic form layout section end */}
-            </div>
+              </div>
+            </section>
           </div>
         </div>
-      </section>
+      </div>
               </Fragment>
             )}
           </Fragment>

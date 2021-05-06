@@ -10,9 +10,6 @@ export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const SORT_ACTION ='SORT_ACTION'
 
 
-
-
-
 //profile
 export const GET_PROFILE = 'GET_PROFILE';
 export const GET_CURRENT_PROFILE = 'GET_CURRENT_PROFILE';
@@ -53,8 +50,10 @@ export const UPDATE_CATEGORY ='UPDATE_CATEGORY'
 export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
 
 
-
-
+//trucks
+export const GET_TRUCKS = 'GET_TRUCKS'
+export const GET_TRUCKS_DETAIL_BY_ID = 'GET_TRUCKS_DETAIL_BY_ID'
+export const TRUCK_ERROR = 'TRUCK_ERROR'
 
 
 

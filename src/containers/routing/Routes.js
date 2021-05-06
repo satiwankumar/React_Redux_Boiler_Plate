@@ -2,6 +2,7 @@ import React, {lazy,Suspense} from 'react';
 import { Route, Switch,BrowserRouter } from 'react-router-dom';
 
 
+
 const Dashboard = lazy(() => import('../dashboard/Dashboard'))
 const Users = lazy(() => import('../users/Users'))
 const NotFound = lazy(() => import('../layout/NotFound'))
@@ -10,8 +11,9 @@ const Viewprofile = lazy(() => import('../users/Viewprofile'))
 const UserDetails = lazy(() => import('../users/UserDetails'))
 const Feedback  = lazy(() => import('../Feedback/Feedback'))
 const FeedbackDetails  = lazy(() => import('../Feedback/FeedbackDetails'))
-
-
+const notifications = lazy(() => import('../dashboard/Notifications'))
+const foodTruck = lazy(() => import('../foodTrucks/foodTruck'))
+const truckDetails = lazy(() => import('../foodTrucks/truckDetails'))
 
 
 
@@ -25,6 +27,9 @@ const Routes = props => {
    
         <PrivateRoute exact path="/dashboard" component={Dashboard}/>
         <PrivateRoute exact path="/userdetail" component={UserDetails}/>
+        <PrivateRoute exact path="/notifications" component={notifications}/>
+        <PrivateRoute exact path="/food-trucks" component={foodTruck}/>
+        <PrivateRoute exact path="/truck_details/:id" component={truckDetails}/>
        
         <PrivateRoute exact path="/profile" component={Viewprofile}/>
         <PrivateRoute exact path="/feedback" component={Feedback}/>
